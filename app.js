@@ -1,7 +1,7 @@
 const express = require('express');
-// const { resolveSoa } = require('node:dns');
 const app = express();
 const uuid = require('uuid');
+const morgan = require('morgan');
 const persons = [
     {name : "gil",
     number : "0526193164"
@@ -28,11 +28,10 @@ const persons = [
     }
 ]
 app.use(express.json())
+app.use(morgan());
 
-
-let numbers = persons.map(person => person.number)
 app.get('/api/persons', (req,res) => {
-    res.json(persons)
+    res.json(persons);
 })
 
 app.delete('/delete/:id', (req,res) => {
@@ -41,9 +40,8 @@ app.delete('/delete/:id', (req,res) => {
         persons.splice([id],1);
         res.send(persons)
     } else {
-        res.send("no such person")
+        res.send("no such person");
     }
-    
 })
 
 app.get('/api/persons/:id', (req,res) => {
@@ -51,13 +49,13 @@ app.get('/api/persons/:id', (req,res) => {
     if(persons[id]) {
         res.send(persons[id]);
     } else {
-        res.status(404).send("No such person")
+        res.status(404).send("No such person");
     }
 })
 
 app.get('/info', (req,res) => {
-    const response = `Phone book have ${persons.length} persons \n  ${new Date}`
-    res.send(response)
+    const response = `Phone book have ${persons.length} persons \n  ${new Date}`;
+    res.send(response);
 })
 app.post('/api/persons',(req,res) => {
     const newPerson = req.body;
@@ -69,12 +67,11 @@ app.post('/api/persons',(req,res) => {
             persons.push(newPerson);
             res.send(persons)
         } else {
-            res.send("Must choose uniq name")
+            res.status(400).send("Must choose uniq name")
         }
     } else {
         res.status(400).send("Must write a name")
     }
-
 })
 
 module.exports = app;
