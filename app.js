@@ -30,11 +30,13 @@ const persons = [
 app.use(express.json())
 app.use(morgan());
 
+app.use(express.static("./build"));
+
 app.get('/api/persons', (req,res) => {
     res.json(persons);
 })
 
-app.delete('/delete/:id', (req,res) => {
+app.delete('/api/persons/:id', (req,res) => {
     const id = req.params.id;
     if(persons[id]) {
         persons.splice([id],1);
