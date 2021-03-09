@@ -36,10 +36,10 @@ app.get('/api/persons', (req,res) => {
     res.json(persons);
 })
 
-app.delete('/api/persons/:id', (req,res) => {
+app.delete('/api/persons/:id', async (req,res) => {
     const id = req.params.id;
     if(persons[id]) {
-        persons.splice([id],1);
+         await persons.splice([id],1);
         res.send(persons)
     } else {
         res.send("no such person");
